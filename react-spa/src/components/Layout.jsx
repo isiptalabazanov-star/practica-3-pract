@@ -1,6 +1,8 @@
+import { useEffect } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { useCart } from '../context/cartContext.js'
 import { useTheme } from '../context/themeContext.js'
+import { useAuth } from '../context/authContext.js'
 
 const navItems = [
   { to: '/', label: 'Каталог', end: true },
@@ -12,6 +14,11 @@ const navItems = [
 function Layout() {
   const { count } = useCart()
   const { theme, toggleTheme } = useTheme()
+  const { user, checkSession, isAdmin } = useAuth()
+
+  useEffect(() => {
+    checkSession()
+  }, [checkSession])
 
   return (
     <div className="app">
@@ -35,6 +42,13 @@ function Layout() {
             ))}
           </nav>
 
+          {user && (
+            <span className="user-info">
+              {user.full_name || user.email}
+              {isAdmin && <span className="role-badge">Админ</span>}
+            </span>
+          )}
+
           <button type="button" className="theme-toggle" onClick={toggleTheme}>
             {theme === 'light' ? 'Тёмная тема' : 'Светлая тема'}
           </button>
@@ -47,7 +61,6 @@ function Layout() {
 
       <footer className="footer">
         <span>TimaStore</span>
-
       </footer>
     </div>
   )

@@ -5,14 +5,17 @@ import './index.css'
 import App from './App.jsx'
 import { CartProvider } from './context/CartProvider.jsx'
 import { ThemeProvider } from './context/ThemeProvider.jsx'
+import { AuthProvider } from './context/AuthProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <ThemeProvider>
-        <CartProvider>
-          <App />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>
   </StrictMode>,
